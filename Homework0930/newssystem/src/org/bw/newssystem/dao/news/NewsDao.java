@@ -11,6 +11,7 @@ import org.bw.newssystem.pojo.News;
 public interface NewsDao {
 	//查找所有新闻
 	public List<News> findAllNews(Connection conn) throws Exception;
+	
 	//根据新闻的主题编号获得前几条新闻(连接，新闻主题编号，截取新闻的起始和结束位置)
 	/**
 	 * @param conn
@@ -23,5 +24,8 @@ public interface NewsDao {
 	
 	//根据新闻编号查找相关新闻
 	public News findNewsListByNid(Connection conn, int nid) throws Exception;
+	
+	//删除新闻
+	public int deleteNews(Connection conn , int nid) throws Exception;
 	
 }

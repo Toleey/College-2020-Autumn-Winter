@@ -71,6 +71,16 @@
 		 response.sendRedirect("comments_control.jsp?opr=showComments&tid="+tid2);
 		
 		 break;
+	 case "deleteNews":
+		 String nid = request.getParameter("nid");
+		 int nid2 = Integer.parseInt(nid);
+	     newsService.deleteNEws(nid2);
+	     response.sendRedirect("news_control.jsp?opr=backstageNewsList");
+		 
+		 break;
+	 case "updateNews":
+		 response.sendRedirect("../newspages/news_add.jsp");
+		 break;
 	}
 	//session.invalidate();
 	

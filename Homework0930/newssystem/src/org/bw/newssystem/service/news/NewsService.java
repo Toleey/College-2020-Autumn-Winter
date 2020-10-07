@@ -18,5 +18,7 @@ public interface NewsService {
 	public List<News> getNewsListByTid(int ntid,int start,int count);
 	//根据新闻编号获得新闻
 	public News getNewsListById(int nid);
+	//删除新闻
+	public int deleteNEws(int nid);
 	
 }

@@ -1,3 +1,7 @@
+<%@page import="com.mysql.fabric.Response"%>
+<%@page import="java.util.Locale"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.sql.Date"%>
 <%@page import="org.bw.newssystem.pojo.Comments"%>
 <%@page import="java.util.List"%>
 <%@page import="org.bw.newssystem.service.comments.impl.CommentsServiceImpl"%>
@@ -26,11 +30,32 @@
 		break;
 		
 		case "addComments":
-			out.println("hello");
-			String ccontent = request.getParameter("ccontent");
-			String cip = request.getParameter("cip");
-			String cauthor = request.getParameter("cauthor");
 			
+			
+			
+			String cauthor = request.getParameter("cauthor");
+			String cip = request.getParameter("cip");
+			String ccontent = request.getParameter("ccontent");
+			
+			String cnid2 = request.getParameter("nid");
+			int cnid3 = Integer.parseInt(cnid2);
+			
+			
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.getDefault());
+			Date cdate = new Date(System.currentTimeMillis());
+			
+						
+			Comments comments = new Comments();
+			
+			comments.setCauthor(cauthor);
+			comments.setCip(cip);
+			comments.setCcontent(ccontent);
+			comments.setCnid(cnid3);
+			comments.setCdate(cdate);
+		
+			commentsServiceImpl.addComments(comments);
+			
+			response.sendRedirect("news_control.jsp?opr=readNews&nid="+cnid3);
 		break;
 	
 	}

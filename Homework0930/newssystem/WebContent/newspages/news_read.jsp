@@ -75,6 +75,7 @@
       		}
       	%>
       </label>
+      </form>
   <!-- <form action="../util/do_login.jsp" method="post" onsubmit="return check()">
     <label> 登录名 </label>
     <input type="text" id="uname" value="" class="login_input" />
@@ -230,7 +231,7 @@
         </table>
       </ul>
       <ul class="classlist">
-         <form action="../util/comments_control.jsp?opr=addComments" method="post" onsubmit="return check()">
+         <form action="../util/comments_control.jsp?opr=addComments&nid=<%=news.getNid() %>" method="post" onsubmit="return check()">
           <table width="80%" align="center">
             <tr>
               <td> 评 论 </td>

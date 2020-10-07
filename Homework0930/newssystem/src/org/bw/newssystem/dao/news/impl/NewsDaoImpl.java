@@ -83,4 +83,11 @@ public class NewsDaoImpl extends BaseDao implements NewsDao {
 		return news;
 	}
 
+	@Override
+	public int deleteNews(Connection conn, int nid) throws Exception {
+		String sql = "DELETE FROM News WHERE nid = ?";
+		int line = this.execUpdate(sql,nid);
+		return line;
+	}
+
 }

@@ -91,4 +91,19 @@ public class NewsServiceImpl implements NewsService {
 		return news;
 	}
 
+	@Override
+	public int deleteNEws(int nid) {
+		Connection conn = newsdao.getConnection();
+		int line = 0;
+		try {
+			line = newsdao.deleteNews(conn, nid);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			newsdao.close(null, null, conn);
+		}
+		return line;
+	}
+
 }

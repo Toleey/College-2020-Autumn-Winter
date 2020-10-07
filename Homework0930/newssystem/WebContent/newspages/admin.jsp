@@ -31,7 +31,7 @@
     			News news = newsList.get(i);
     	%>
       
-	      <li><%= news.getNtitle() %><span> 作者： &#160;&#160;&#160;&#160;<%= news.getNauthor() %> <a href='#'>修改</a> &#160;&#160;&#160;&#160; <a href='#' onclick='return clickdel()'>删除</a> </span> </li>
+	      <li><%= news.getNtitle() %><span> 作者： &#160;&#160;&#160;&#160;<%= news.getNauthor() %> <a href='../util/news_control.jsp?opr=updateNews&nid=<%=news.getNid() %>'>修改</a> &#160;&#160;&#160;&#160; <a href='../util/news_control.jsp?opr=deleteNews&nid=<%=news.getNid() %>' onclick='return clickdel()'>删除</a> </span> </li>
 	     
 	      <li class='space'></li>
 	      <% } %>

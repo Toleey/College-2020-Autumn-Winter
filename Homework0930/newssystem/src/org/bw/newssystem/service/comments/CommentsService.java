@@ -8,4 +8,6 @@ public interface CommentsService {
 	
 	//根据新闻编号查找评论
 	public List<Comments> getCommentsByNid(int cnid);
+	//新增评论
+	public int addComments(Comments comments);
 }

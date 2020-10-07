@@ -32,4 +32,11 @@ public class CommentsImpl extends BaseDao implements CommentsDao {
 		return commentsList;
 	}
 
+	@Override
+	public int insertComment(Connection conn ,Comments comments) throws Exception {
+		String sql = "INSERT INTO COMMENTS (cid,cnid,ccontent,cdate,cip,cauthor) VALUES (?,?,?,?,?,?)";
+		int line = this.execUpdate(sql, comments.getCid(),comments.getCnid(),comments.getCcontent(),comments.getCdate(),comments.getCip(),comments.getCauthor());
+		return line;
+	}
+
 }

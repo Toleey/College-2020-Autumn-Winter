@@ -25,4 +25,21 @@ public class CommentsServiceImpl implements CommentsService {
 		return commentsList;
 	}
 
+	@Override
+	public int addComments(Comments comments) {
+		Connection conn = commentsDao.getConnection();
+		int line = 0;
+		
+		try {
+			line = commentsDao.insertComment(conn, comments);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			commentsDao.close(null, null, conn);
+		}
+		
+		return line;
+	}
+
 }
