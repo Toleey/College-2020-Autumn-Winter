@@ -12,7 +12,7 @@
   <%@include file="console_element/left.html" %>
   <div id="opt_area">
     <h1 id="opt_type"> 添加新闻： </h1>
-    <form action="../util/do_news_list.jsp" method="post">
+    <form action="../util/news_control.jsp?opr=addNews" method="post">
       <p>
         <label> 主题 </label>
         <select name="ntid">

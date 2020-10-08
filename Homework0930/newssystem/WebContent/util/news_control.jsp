@@ -1,3 +1,5 @@
+<%@page import="java.util.Date"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="org.bw.newssystem.pojo.Topic"%>
 <%@page import="org.bw.newssystem.service.topic.impl.TopicServiceImpl"%>
 <%@page import="org.bw.newssystem.service.topic.TopicService"%>
@@ -76,6 +78,31 @@
 		 int nid2 = Integer.parseInt(nid);
 	     newsService.deleteNEws(nid2);
 	     response.sendRedirect("news_control.jsp?opr=backstageNewsList");
+		 
+		 break;
+	 case "addNews":
+		 News news2 = new News();
+		 String ntid3 = request.getParameter("ntid");
+		 int ntid4 = Integer.parseInt(ntid3);
+		 String ntitle = request.getParameter("ntitle");
+		 String nauthor = request.getParameter("nauthor");
+		 String nsummary = request.getParameter("nsummary");
+		 String ncontent = request.getParameter("ncontent");
+		 String file = request.getParameter("file");
+	
+		 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.getDefault());
+		 Date date = new Date(System.currentTimeMillis());
+		
+		 news2.setNtid(ntid4);
+		 news2.setNtitle(ntitle);
+		 news2.setNauthor(nauthor);
+		 news2.setNsummary(nsummary);
+		 news2.setNcontent(ncontent);
+		 news2.setNpicPath(file);
+		 news2.setNcreateDate(date);
+		 news2.setNmodifyDate(date);
+		 
+		 out.print(news2);
 		 
 		 break;
 	 case "updateNews":

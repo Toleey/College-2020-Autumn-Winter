@@ -28,4 +28,7 @@ public interface NewsDao {
 	//删除新闻
 	public int deleteNews(Connection conn , int nid) throws Exception;
 	
+	//添加新闻
+	//public int addNews(Connection conn , News news) throws Exception;
+	
 }
