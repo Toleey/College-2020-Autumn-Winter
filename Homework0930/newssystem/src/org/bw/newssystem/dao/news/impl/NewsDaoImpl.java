@@ -90,4 +90,11 @@ public class NewsDaoImpl extends BaseDao implements NewsDao {
 		return line;
 	}
 
+	@Override
+	public int insertNews(Connection conn, News news) throws Exception {
+		String sql = "INSERT INTO News (ntid,ntitle,nauthor,ncreateDate,npicPath,ncontent,nmodifyDate,nsummary) VALUES (?,?,?,?,?,?,?,?)";
+		int line = this.execUpdate(sql,news.getNtid(),news.getNtitle(),news.getNauthor(),news.getNcreateDate(),news.getNpicPath(),news.getNcontent(),news.getNmodifyDate(),news.getNsummary());
+		return line;
+	}
+
 }

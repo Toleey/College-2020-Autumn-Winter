@@ -76,9 +76,14 @@
 	 case "deleteNews":
 		 String nid = request.getParameter("nid");
 		 int nid2 = Integer.parseInt(nid);
-	     newsService.deleteNEws(nid2);
+	     newsService.deleteNews(nid2);
 	     response.sendRedirect("news_control.jsp?opr=backstageNewsList");
 		 
+		 break;
+	 case "addNewsByTopic":
+		 List <Topic> topicList2 = topicService.getAllTopics();
+		 session.setAttribute("topicList2", topicList2);
+		 response.sendRedirect("../newspages/news_add.jsp");
 		 break;
 	 case "addNews":
 		 News news2 = new News();
@@ -102,7 +107,9 @@
 		 news2.setNcreateDate(date);
 		 news2.setNmodifyDate(date);
 		 
-		 out.print(news2);
+		 newsService.addNews(news2);
+		 
+		 response.sendRedirect("news_control.jsp?opr=backstageNewsList");
 		 
 		 break;
 	 case "updateNews":

@@ -1,3 +1,4 @@
+<%@page import="org.bw.newssystem.pojo.Topic"%>
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -6,10 +7,14 @@
 <title>添加主题--管理后台</title>
 <link href="../css/admin.css" rel="stylesheet" type="text/css" />
 </head>
+ <%
+  	List<Topic> topicList2 = (List<Topic>) session.getAttribute("topicList2");
+  %>
 <body>
 <%@include file="console_element/top.jsp" %>
 <div id="main">
   <%@include file="console_element/left.html" %>
+ 
   <div id="opt_area">
     <h1 id="opt_type"> 添加新闻： </h1>
     <form action="../util/news_control.jsp?opr=addNews" method="post">
@@ -17,7 +22,17 @@
         <label> 主题 </label>
         <select name="ntid">
           <option value="1">选择</option>
-          <option value='1'> 国内 </option>
+          <%
+          if(topicList2!=null){
+          for(int i = 0 ; i < topicList2.size() ; i++){
+          %>
+           <option value='<%=topicList2.get(i).getTid() %>'> <%=topicList2.get(i).getTname() %> </option>
+          <%
+          }}else{
+        	  response.sendRedirect("../util/news_control.jsp?opr=addNewsByTopic");
+          }
+          %>
+         <!--  <option value='1'> 国内 </option>
           <option value='2'> 国际 </option>
           <option value='3'> 军事 </option>
           <option value='4'> 体育 </option>
@@ -32,7 +47,7 @@
           <option value='13'> 家居 </option>
           <option value='14'> 旅游 </option>
           <option value='15'> 文化 </option>
-          <option value='16'> 其他 </option>
+          <option value='16'> 其他 </option> -->
         </select>
       </p>
       <p>
@@ -64,5 +79,8 @@
 <div id="footer">
   <%@include file="console_element/bottom.html" %>
 </div>
+<%
+	session.removeAttribute("topicList2");
+%>
 </body>
 </html>

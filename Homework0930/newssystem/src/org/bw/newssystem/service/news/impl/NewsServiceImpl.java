@@ -92,7 +92,7 @@ public class NewsServiceImpl implements NewsService {
 	}
 
 	@Override
-	public int deleteNEws(int nid) {
+	public int deleteNews(int nid) {
 		Connection conn = newsdao.getConnection();
 		int line = 0;
 		try {
@@ -103,6 +103,23 @@ public class NewsServiceImpl implements NewsService {
 		}finally {
 			newsdao.close(null, null, conn);
 		}
+		return line;
+	}
+
+	@Override
+	public int addNews(News news) {
+		Connection conn = newsdao.getConnection();
+		int line = 0;
+		
+		try {
+			line = newsdao.insertNews(conn, news);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			newsdao.close(null, null, conn);
+		}
+		
 		return line;
 	}
 

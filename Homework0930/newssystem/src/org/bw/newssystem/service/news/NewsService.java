@@ -19,6 +19,8 @@ public interface NewsService {
 	//根据新闻编号获得新闻
 	public News getNewsListById(int nid);
 	//删除新闻
-	public int deleteNEws(int nid);
+	public int deleteNews(int nid);
+	//新增新闻
+	public int addNews(News news);
 	
 }
