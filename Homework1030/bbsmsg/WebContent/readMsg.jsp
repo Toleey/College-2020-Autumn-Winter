@@ -9,7 +9,7 @@
 			<div class="mainbox">
 				<div class="title readMessage png"></div>
 				<div class="menu">
-					<span>当前用户：<a href="main.jsp">${sessionScope.loginuser}</a></span>
+					<span>当前用户：<a href="MsgServlet?action=list">${sessionScope.loginuser}</a></span>
 					<span><a href="UserServlet?action=findUsers">发短消息</a></span>
 					<span><a href="UserServlet?action=logout">退出</a></span>
 				</div>
@@ -19,7 +19,7 @@
 							<div class="tmenu">
 								<ul class="clearfix">
 									<li>题目：${msg.title} </li>
-									<li>来自：${msg.sendto}</li>
+									<li>来自：${msg.username}</li>
 									<li>时间：${msg.datetime}</li>									
 								</ul>
 							</div>

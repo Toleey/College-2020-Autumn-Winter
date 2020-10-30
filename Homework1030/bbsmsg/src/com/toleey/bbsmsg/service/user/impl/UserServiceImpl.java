@@ -11,10 +11,11 @@ import com.toleey.bbsmsg.service.user.UserService;
 
 public class UserServiceImpl implements UserService  {
 	UserDaoImpl userdao = new UserDaoImpl();
-	Connection conn = userdao.getConnection();
+	
 
 	@Override //0登陆失败 1登陆成功 temUser,临时User
 	public int login(User user) {
+		Connection conn = userdao.getConnection();
 		int islogin = 0;	
 		User temUser = null;
 		try {
@@ -35,6 +36,7 @@ public class UserServiceImpl implements UserService  {
 
 	@Override
 	public int signup(User user) {
+		Connection conn = userdao.getConnection();
 		int isSignup = 0;
 		try {
 			conn.setAutoCommit(false);

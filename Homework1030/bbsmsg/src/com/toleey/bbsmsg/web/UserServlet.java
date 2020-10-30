@@ -48,7 +48,7 @@ public class UserServlet extends HttpServlet{
 				
 				if(isLogin == 1){ //登陆成功				
 					session.setAttribute("loginuser", user.getUsername());
-					resp.sendRedirect("main.jsp");				
+					resp.sendRedirect("MsgServlet?action=list");				
 				}else{
 					req.setAttribute("error", "用户名或密码错误");
 					req.getRequestDispatcher("index.jsp").forward(req, resp); 

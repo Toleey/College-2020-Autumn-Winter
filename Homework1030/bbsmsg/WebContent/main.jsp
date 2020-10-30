@@ -6,7 +6,7 @@
 	<div class="mainbox">
 		<div class="title myMessage png"></div>		
 		<div class="menu">
-			<span>当前用户：<a href="main.jsp">${sessionScope.loginuser}</a></span>
+			<span>当前用户：<a href="MsgServlet?action=list">${sessionScope.loginuser}</a></span>
 			<span><a href="UserServlet?action=findUsers">发短消息</a></span>
 			<span><a href="UserServlet?action=logout">退出</a></span>
 		</div>

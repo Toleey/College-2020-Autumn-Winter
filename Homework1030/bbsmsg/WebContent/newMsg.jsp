@@ -20,7 +20,7 @@
 	<div id="main">
 		<div class="mainbox">			
 			<div class="menu">
-				<span>当前用户：<a href="main.jsp">${sessionScope.loginuser}</a></span>
+				<span>当前用户：<a href="MsgServlet?action=list">${sessionScope.loginuser}</a></span>
 				<span><a href="UserServlet?action=findUsers">发短消息</a></span>
 				<span><a href="UserServlet?action=logout">退出</a></span>
 			</div>
@@ -37,8 +37,13 @@
 						  	 					<option selected="selected">${user.username}</option>
 						  	 				</c:if>
 						  	 				<c:if test="${not user.username.equals(sendto)}">
-						  	 					<option>${user.username}</option>
+						  	 					<c:if test="${not user.username.equals(sessionScope.loginuser)}">
+						  	 						<option>${user.username}</option>
+						  	 					</c:if>
 						  	 				</c:if>
+						  	 				<%-- <c:if test="${not user.username.equals(sendto)}">
+						  	 					<option>${user.username}</option>
+						  	 				</c:if> --%>
 						  	 			</c:forEach>
 						  	 		</select>
 								</li>								
