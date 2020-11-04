@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>ajax</title>
+<META HTTP-EQUIV="content-type" CONTENT="text/html;charset=UTF-8">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+<META HTTP-EQUIV="Expires" CONTENT="0">
+<script type="text/javascript" src="js/jquery-3.5.1.js"></script>
+<script type="text/javascript">
+$(document).ready(
+    function() { //加载这个网页的时候，开始执行这个方法
+        $("#email").blur( //获取email输入框焦点
+            function() { //这行这个方法
+                var inputValue = this.value;
+                if (inputValue == "") {
+                    $("#demo").html("<font color='red'>请输入邮箱</font>");
+                } else {
+                    $.ajax({
+                        "url"      :"userServlet?opr=1",
+                        "type"     :"get",
+                        "data"     :"email="+inputValue,
+                        "dataType" :"text",
+                        "success"  :processResponse1
+                    });
+                }
+            }
+        );
+        $("#name").blur( //获取name输入框焦点
+            function() { //这行这个方法
+                var inputValue = this.value;
+                if (inputValue == "") {
+                    $("#demo").html("<font color='red'>请输入用户名</font>");
+                } else {
+                    $.ajax({
+                        "url"      :"userServlet?opr=2",
+                        "type"     :"get",
+                        "data"     :"name="+inputValue,
+                        "dataType" :"text",
+                        "success"  :processResponse2
+                    });
+                }
+            }
+        );
+        $("#password").blur( //获取password输入框焦点
+            function() { //这行这个方法
+                var inputValue = this.value;
+                if (inputValue == "") {
+                    $("#demo").html("<font color='red'>请输入密码</font>");
+                } else {
+                    $.ajax({
+                        "url"      :"userServlet?opr=3",
+                        "type"     :"get",
+                        "data"     :"password="+inputValue,
+                        "dataType" :"text",
+                        "success"  :processResponse3
+                    });
+                }
+            }
+        );
+    }
+
+);
+
+function processResponse1(info) {
+    if (info == "fail") {
+    	$("#demo").html("<font color='red'>邮箱已被注册</font>");
+        $("#email").val("");
+    } else {
+    	$("#demo").html("<font color='green'>邮箱可以使用</font>");
+    }
+}
+function processResponse2(info) {
+    if (info == "fail") {
+        $("#demo").html("<font color='red'>用户名已被注册</font>");
+        $("#name").val("");
+    } else {
+        $("#demo").html("<font color='green'>用户名可以使用</font>");
+    }
+}
+function processResponse3(info) {
+    if (info == "fail") {
+        $("#demo").html("<font color='red'>密码小于6位</font>");
+        $("#password").val("");
+    } else {
+        $("#demo").html("<font color='green'>密码可以使用</font>");
+    }
+}
+</script>
+</head>
+<body>
+<div id="demo" style="height:30px;"></div>
+<form action="" method="POST" name="f1">
+        <table>
+            <tr>
+                <td>注册邮箱：<input type="text" name="email" id="email"></td>
+            </tr>
+            <tr>
+                <td>用户名：<input type="text" name="name" id="name"></td>
+            </tr>
+            <tr>
+                <td>注册密码：<input type="password" name="password" id="password"></td>
+            </tr>
+            <tr>
+                <td><center><input type="button" value="提交"></center></td>
+            </tr>
+        </table>
+</form>
+</body>
+</html>
