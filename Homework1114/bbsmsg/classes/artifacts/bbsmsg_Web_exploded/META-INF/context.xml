@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+	<Resource name="jdbc/bbsmsg" auth="Container" type="javax.sql.DataSource"
+      maxActive="100" maxIdle="30" maxWait="10000" username="root"
+      password="root" driverClassName="com.mysql.jdbc.Driver"
+      url="jdbc:mysql://127.0.0.1:3306/BBS_Message?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false" />
+	
+</Context>

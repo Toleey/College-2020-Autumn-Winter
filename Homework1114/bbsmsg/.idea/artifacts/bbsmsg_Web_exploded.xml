@@ -1,0 +1,19 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="bbsmsg:Web exploded">
+    <output-path>$PROJECT_DIR$/classes/artifacts/bbsmsg_Web_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="bbsmsg/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="bbsmsg" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="lib" />
+          <element id="library" level="module" name="standard.jar" module-name="bbsmsg" />
+          <element id="library" level="module" name="mysql-connector-java-5.1.49-bin.jar" module-name="bbsmsg" />
+          <element id="library" level="module" name="jstl.jar" module-name="bbsmsg" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>
