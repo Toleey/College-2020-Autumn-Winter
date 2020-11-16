@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" version="3.1">
+  <display-name>newssystem</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  <resource-ref>
+    <res-ref-name>jdbc/news</res-ref-name>
+    <res-type>javax.sql.DataSource</res-type>
+    <res-auth>Container</res-auth>
+  </resource-ref>
+  
+  <filter>
+  	<filter-name>EncodingFilter</filter-name>
+  	<filter-class>org.bw.newssystem.filter.EncodingFilter</filter-class>
+  	<init-param> <!-- 默认编码utf-8 -->
+  		<param-name>code</param-name>
+  		<param-value>UTF-8</param-value>
+  	</init-param>	
+  </filter>
+  <filter-mapping>
+	  <filter-name>EncodingFilter</filter-name>
+	  <url-pattern>/*</url-pattern>
+  </filter-mapping>  
+  
+  <filter>  <!-- 先执行谁把谁写在url前面 -->
+  	<filter-name>LoginCheckFilter</filter-name>
+  	<filter-class>org.bw.newssystem.filter.LoginCheckFilter</filter-class>
+  </filter>
+  <filter-mapping>
+ 	<filter-name>LoginCheckFilter</filter-name>
+  	<url-pattern>/newspages/*</url-pattern>
+  	<dispatcher>REQUEST</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+    <!-- <dispatcher>INCLUDE</dispatcher>
+    <dispatcher>ERROR</dispatcher> -->
+  </filter-mapping>  
+  
+<!-- 	<filter>
+    <filter-name>wordsFilter</filter-name>
+    <filter-class>org.bw.newssystem.filter.WordsFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>wordsFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+  </filter-mapping> -->
+  
+</web-app>
