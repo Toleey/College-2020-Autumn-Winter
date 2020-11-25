@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.bw.smbms.dao.bill.BillMapper"> <!-- 不同的表写在不同的mapper中 -->
+    <resultMap id="billFindMap" type="Bill">
+        <id property="id" column="id"></id>
+        <result property="proName" column="proName"></result>
+
+    </resultMap>
+
+    <select id="findBillCount" resultType="int">
+        select count(id) as line from smbms_bill
+    </select>
+
+    <select id="findBillList" resultType="org.bw.smbms.entity.Bill">
+        select * from smbms_bill
+    </select>
+
+    <select id="findBillManyInfoByProductNameAndProName" resultMap="billFindMap">
+        SELECT bill.id,billCode,productName,proName,totalPrice,isPayment,bill.creationDate
+        FROM smbms_bill AS bill INNER JOIN smbms_provider AS provider ON bill.providerId = provider.id
+        WHERE bill.productName LIKE concat('%',#{productName},'%') AND provider.id = #{proID}
+    </select>
+
+    <resultMap type="Bill" id="BillMap" >
+        <id property="id" column="b.id"  />
+        <result column="billCode" property="billCode" />
+        <association property="provider"  javaType="Provider" resultMap="ProviderMap"/>
+    </resultMap>
+    <resultMap type="Provider" id="ProviderMap" >
+        <id property="id" column="p.id" />
+        <result property="proCode" column="proCode" />
+        <result property="proName" column="proName" />
+    </resultMap>
+
+    <select id="findBillAndProvider" resultMap="BillMap">
+        SELECT b.id,p.id,billCode,productName,proCode,proName,proContact,proPhone,totalPrice,isPayment
+        FROM smbms_provider AS p INNER JOIN smbms_bill AS b ON p.id = b.providerId
+    </select>
+
+    <insert id="insertBill" parameterType="Bill">
+        INSERT INTO smbms_Bill
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="billCode!=null">billCode,</if>
+            <if test="productName!=null">productName,</if>
+            <if test="productDesc!=null">productDesc,</if>
+            <if test="productUnit!=null">productUnit,</if>
+            <if test="productCount!=null">productCount,</if>
+            <if test="totalPrice!=null">totalPrice,</if>
+            <if test="isPayment!=null">isPayment,</if>
+            <if test="createdBy!=null">createdBy,</if>
+            <if test="creationDate!=null">creationDate,</if>
+            <if test="modifyBy!=null">modifyBy,</if>
+            <if test="modifyDate!=null">modifyDate,</if>
+            <if test="providerId!=null">providerId,</if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="billCode!=null">#{billCode},</if>
+            <if test="productName!=null">#{productName},</if>
+            <if test="productDesc!=null">#{productDesc},</if>
+            <if test="productUnit!=null">#{productUnit},</if>
+            <if test="productCount!=null">#{productCount},</if>
+            <if test="totalPrice!=null">#{totalPrice},</if>
+            <if test="isPayment!=null">#{isPayment},</if>
+            <if test="createdBy!=null">#{createdBy},</if>
+            <if test="creationDate!=null">#{creationDate},</if>
+            <if test="modifyBy!=null">#{modifyBy},</if>
+            <if test="modifyDate!=null">#{modifyDate},</if>
+            <if test="providerId!=null">#{providerId},</if>
+        </trim>
+    </insert>
+	
+</mapper>
