@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--第一种是调用xml的方法，第二种是调用接口里的方法-->
+<mapper namespace="org.bw.smbms.dao.user.UserMapper"> <!-- 第二种方法，   不同的表写在不同的mapper中 -->
+    <cache eviction="FIFO" flushInterval="600000" size="512" readOnly="true" />
+
+<!--<mapper namespace="org.bw.smbms.dao.user">第一种方法 -->
+    <resultMap type="User" id="UserRoleMap" >
+        <!-- property是指对象里的属性,column结果集里的列名   结果集和列名一样就会自动映射   半自动orm-->
+        <!--主键用id表示，普通字段用result-->
+        <id property="id" column="id"></id>
+        <result property="userRoleName" column="roleName" />
+        <result property="userAge" column="age" />
+    </resultMap>
+
+    <select id="findUserCount" resultType="int">
+        select count(id) as line from smbms_user
+    </select>
+
+<!--    <select id="findUserList" resultType="User">-->
+<!--        select * from smbms_user-->
+<!--    </select>-->
+    <!--分页 -->
+    <select id="findUserList" resultType="User">
+        SELECT * FROM smbms_user ORDER BY creationDate DESC LIMIT #{from},#{pageSize}
+    </select>
+
+    <select id="findUsersByDimName" parameterType="String" resultType="User">
+        SELECT * FROM smbms_user WHERE userName LIKE concat('%',#{name},'%')
+    </select>
+
+    <select id="findUsersByDimNameAndUserRole" parameterType="User" resultType="User">
+        SELECT userName,userCode,gender,(YEAR(NOW())-YEAR(birthday)) as age,phone,userRole
+        FROM smbms_user
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="userName!=null">
+                userName LIKE concat('%',#{userName},'%')
+            </if>
+            <if test="userRole!=null">
+                AND userRole = #{userRole}
+            </if>
+        </trim>
+<!--        <where>-->
+<!--            <if test="userName!=null">-->
+<!--                userName LIKE concat('%',#{userName},'%')-->
+<!--            </if>-->
+<!--            <if test="userRole!=null">-->
+<!--                AND userRole = #{userRole}-->
+<!--            </if>-->
+<!--        </where>-->
+    </select>
+
+    <select id="findUsersByDimNameAndUserRoleMap" parameterType="java.util.Map" resultType="User">
+        SELECT userName,userCode,gender,(YEAR(NOW())-YEAR(birthday)) as age,phone,userRole
+        FROM smbms_user
+        WHERE userName
+        LIKE concat('%',#{userName},'%') AND userRole = #{userRole}
+    </select>
+
+    <select id="findUsersAndRoleByDimNameAndUserRole"  resultMap="UserRoleMap"> <!--映射到上面的resultMap设置-->
+       SELECT u.id,userCode,userName,gender,YEAR(CURRENT_DATE)-YEAR(birthday) AS age,phone,roleName
+       FROM smbms_user AS u INNER JOIN smbms_role AS r ON userRole = r.id
+       WHERE userName LIKE concat('%',#{userName},'%') AND userRole = #{userRole}
+    </select>
+
+    <insert id="insertUser" parameterType="User">
+       INSERT INTO smbms_user
+       <trim prefix="(" suffix=")" suffixOverrides=",">
+           <if test="userCode!=null">userCode,</if>
+           <if test="userName!=null">userName,</if>
+           <if test="userPassword!=null">userPassword,</if>
+           <if test="gender!=null">gender,</if>
+           <if test="birthday!=null">birthday,</if>
+           <if test="phone!=null">phone,</if>
+           <if test="address!=null">address,</if>
+           <if test="userRole!=null">userRole,</if>
+           <if test="createdBy!=null">createdBy,</if>
+           <if test="creationDate!=null">creationDate,</if>
+           <if test="modifyBy!=null">modifyBy,</if>
+           <if test="modifyDate!=null">modifyDate,</if>
+       </trim>
+       VALUES
+       <trim prefix="(" suffix=")" suffixOverrides=",">
+           <if test="userCode!=null">#{userCode},</if>
+           <if test="userName!=null">#{userName},</if>
+           <if test="userPassword!=null">#{userPassword},</if>
+           <if test="gender!=null">#{gender},</if>
+           <if test="birthday!=null">#{birthday},</if>
+           <if test="phone!=null">#{phone},</if>
+           <if test="address!=null">#{address},</if>
+           <if test="userRole!=null">#{userRole},</if>
+           <if test="createdBy!=null">#{createdBy},</if>
+           <if test="creationDate!=null">#{creationDate},</if>
+           <if test="modifyBy!=null">#{modifyBy},</if>
+           <if test="modifyDate!=null">#{modifyDate},</if>
+       </trim>
+    </insert>
+
+    <!--根据用户编号，修改用户编码，用户名和密码-->
+    <update id="updateUserById" parameterType="User" >
+        UPDATE
+            smbms_user
+        <trim prefix="set" suffix=" WHERE id = #{id}" suffixOverrides=",">
+            <if test="userCode!=null">userCode = #{userCode},</if>
+            <if test="userName!=null">userName = #{userName},</if>
+            <if test="userPassword!=null">userPassword = #{userPassword},</if>
+            <if test="gender!=null">gender = #{gender},</if>
+            <if test="birthday!=null">birthday = #{birthday},</if>
+            <if test="phone!=null">phone = #{phone},</if>
+            <if test="address!=null">address = #{address},</if>
+            <if test="userRole!=null">userRole = #{userRole},</if>
+            <if test="createdBy!=null">createdBy = #{createdBy},</if>
+            <if test="creationDate!=null">creationDate = #{creationDate},</if>
+            <if test="modifyBy!=null">modifyBy = #{modifyBy},</if>
+            <if test="modifyDate!=null">modifyDate = #{modifyDate},</if>
+        </trim>
+    </update>
+
+    <!--修改用户密码-->
+    <update id="updateUserPassword">
+        UPDATE smbms_user
+        SET userPassword = #{password}
+        WHERE id = #{userId}
+    </update>
+
+    <delete id="deleterUser">
+        DELETE FROM smbms_user WHERE id = #{userId}
+    </delete>
+
+    <!--一个用户表拥有一个角色的一对一关系-->
+    <!--1.这是用户表的映射-->
+    <resultMap type="User" id="UserAndRoleMap" >
+        <id column="id" property="id" />
+        <result column="userCode" property="userCode" />
+        <association property="role"  javaType="Role" resultMap="roleResultMap"/><!--javaType属性是什么类型的Role-->
+        <!--一对多就是写collection -->
+    </resultMap>
+    <!--2.这是角色表的映射-->
+    <resultMap type="Role" id="roleResultMap" >
+        <id property="id" column="r_id" />
+        <result property="roleCode" column="roleCode" />
+        <result property="roleName" column="roleName" />
+    </resultMap>
+
+    <select id="findUserAndRoleOfUser" resultMap="UserAndRoleMap">
+        SELECT u.*,r.id AS r_id,r.roleCode,r.roleName,r.createdBy,r.creationDate,r.modifyBy,r.modifyDate FROM smbms_user AS u JOIN smbms_role AS r ON u.userRole = r.id
+    </select>
+
+    <!--一个用户拥有多个配送地址    -->
+    <resultMap id="UserSendAddressMap" type="User">
+        <id column="id" property="id" />
+        <result column="userCode" property="userCode" />
+        <collection property="sendAddress" ofType="Address" resultMap="addressMap" /> <!--ofType集合里面的是什么类型 Address-->
+        <!--不见得自己每个配，因为javebean里面的与数据库名字一样，可以自动映射-->
+    </resultMap>
+    <resultMap id="addressMap" type="Address">
+        <id column="a_id" property="id" />
+        <result column="addressDesc" property="addressDesc"/>
+    </resultMap>
+
+    <select id="findUserAndSendAddressOfUser" resultMap="UserSendAddressMap">
+        SELECT u.*,a.id AS a_id,a.addressDesc,a.contact,a.createdBy,a.creationDate
+        FROM smbms_user AS u INNER JOIN smbms_address AS a
+        ON u.id = a.userId;
+    </select>
+
+    <!--使用动态sql中循环，参数为数组-->
+    <select id="findUserListByUserRole_Array" resultType="User">
+        SELECT 
+            *
+        FROM 
+            smbms_user
+        WHERE 
+            userRole 
+        IN
+            <foreach collection="array" item="ids" open="(" close=")" separator=",">
+                #{ids}
+            </foreach>
+
+    </select>
+
+    <select id="findUserListByUserRole_List" resultType="User">
+        SELECT
+            *
+        FROM
+            smbms_user
+        WHERE
+            userRole
+        IN
+            <foreach collection="list" item="idsList" open="(" close=")" separator=",">
+                #{idsList}
+            </foreach>
+    </select>
+
+    <select id="findUserListByUserRoleAndGender" resultType="User">
+        SELECT
+            *
+        FROM
+            smbms_user
+        WHERE
+                gender=#{gender} 
+            AND 
+                userRole IN
+                <foreach collection="roleIdList" item="idsvalue" separator="," open="(" close=")">
+                    #{idsvalue}
+                </foreach>
+    </select>
+
+    <select id="findUserByRoleName" resultType="User">
+        SELECT
+            *
+        FROM
+            smbms_user
+        WHERE
+            userRole
+            IN (
+                SELECT
+                    id
+                FROM
+                    smbms_role
+                WHERE
+                    roleName IN
+                    <foreach collection="roleList" item="role" open="(" close=")" separator=",">
+                        #{role}
+                    </foreach>
+            )
+    </select>
+
+    <select id="findUserByRoleNameAndGender" resultType="User">
+        SELECT
+            *
+        FROM
+            smbms_user
+        WHERE
+            userRole
+            IN (
+                SELECT
+                    id
+                FROM
+                    smbms_role
+                WHERE
+                    roleName IN
+                    <foreach collection="roleList" item="role" open="(" close=")" separator=",">
+                        #{role}
+                    </foreach>
+                )
+            AND
+            gender = ANY(
+                            SELECT
+                                id
+                            FROM
+                                smbms_user
+                            WHERE
+                                gender = #{gender}
+                        )
+    </select>
+
+    <select id="findUserListByUname_CDate_Role" parameterType="java.util.Map" resultType="User">
+        SELECT
+            *
+        FROM
+            smbms_user
+        WHERE
+                userName LIKE concat('%',#{userName},'%')
+            AND creationDate BETWEEN #{createDate}
+            AND CURDATE()
+            AND userRole =
+                <choose>
+                    <when test="userRole=='管理员'">1</when>
+                    <when test="userRole=='经理'">2</when>
+                    <otherwise>3</otherwise>
+                </choose>
+    </select>
+
+    <select id="findUserListByUName_CDateScope_Role" parameterType="java.util.Map" resultType="User">
+        SELECT
+            *
+        FROM
+            smbms_user
+        WHERE
+            userName LIKE concat('%',#{userName},'%')
+        AND
+            <choose>
+                <when test="seniority=='老员工'">TIMESTAMPDIFF(YEAR,creationDate,NOW())&gt;=5</when>
+                <when test="seniority=='中员工'">TIMESTAMPDIFF(YEAR,creationDate,NOW())&lt;5 AND TIMESTAMPDIFF(YEAR,creationDate,NOW())&gt;=3  </when>
+                <otherwise>TIMESTAMPDIFF(YEAR,creationDate,NOW())&lt;3 </otherwise>
+            </choose>
+        AND
+            userRole = #{userRole}
+    </select>
+
+
+</mapper>

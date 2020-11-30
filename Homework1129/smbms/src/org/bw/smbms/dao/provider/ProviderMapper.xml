@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.bw.smbms.dao.provider.ProviderMapper"> <!-- 不同的表写在不同的mapper中 -->
+
+    <select id="findProviderCount" resultType="int">
+        select count(id) as line from smbms_provider
+    </select>
+
+<!--    <select id="findProviderList" resultType="org.bw.smbms.entity.Provider">-->
+<!--        select * from smbms_provider-->
+<!--    </select>-->
+
+    <select id="findProviderList" resultType="org.bw.smbms.entity.Provider">
+        select * from smbms_provider ORDER BY creationDate DESC LIMIT #{from},#{pageSize}
+    </select>
+
+    <select id="findProviderByProNameAndProContact" parameterType="Provider" resultType="Provider">
+        SELECT id,proName,proPhone,proAddress,proFax
+        FROM smbms_provider
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="proName!=null">
+                proName LIKE concat('%',#{proName},'%')
+            </if>
+
+            <if test="proContact!=null">
+                AND proContact LIKE concat('%',#{proContact},'%')
+            </if>
+         </trim>
+    </select>
+
+    <select id="findProviderByProNameAndProContactMap" parameterType="java.util.Map" resultType="Provider">
+        SELECT id,proName,proPhone,proAddress,proFax
+        FROM smbms_provider
+        WHERE proName LIKE concat('%',#{proName},'%') AND proContact LIKE concat('%',#{proContact},'%')
+    </select>
+
+    <insert id="insertProvider" parameterType="Provider">
+       INSERT INTO smbms_provider
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="proCode!=null">proCode,</if>
+            <if test="proName!=null">proName,</if>
+            <if test="proDesc!=null">proDesc,</if>
+            <if test="proContact!=null">proContact,</if>
+            <if test="proPhone!=null">proPhone,</if>
+            <if test="proAddress!=null">proAddress,</if>
+            <if test="proFax!=null">proFax,</if>
+            <if test="createdBy!=null">createdBy,</if>
+            <if test="creationDate!=null">creationDate,</if>
+            <if test="modifyDate!=null">modifyDate,</if>
+            <if test="modifyBy!=null">modifyBy,</if>
+        </trim>
+       VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="proCode!=null">#{proCode},</if>
+            <if test="proName!=null">#{proName},</if>
+            <if test="proDesc!=null">#{proDesc},</if>
+            <if test="proContact!=null">#{proContact},</if>
+            <if test="proPhone!=null">#{proPhone},</if>
+            <if test="proAddress!=null">#{proAddress},</if>
+            <if test="proFax!=null">#{proFax},</if>
+            <if test="createdBy!=null">#{createdBy},</if>
+            <if test="creationDate!=null">#{creationDate},</if>
+            <if test="modifyDate!=null">#{modifyDate},</if>
+            <if test="modifyBy!=null">#{modifyBy},</if>
+        </trim>
+    </insert>
+
+    <update id="updateProvider" parameterType="Provider">
+        UPDATE
+            smbms_provider
+        <trim prefix="set" suffix="WHERE id = #{id}" suffixOverrides=",">
+            <if test="proCode!=null">
+                proCode=#{proCode},
+            </if>
+            <if test="proName!=null">
+                proName=#{proName},
+            </if>
+            <if test="proDesc!=null">
+                proDesc=#{proDesc}
+            </if>
+            <if test="proContact!=null">
+                proContact = #{proContact}
+            </if>
+            <if test="proPhone!=null">
+                proPhone = #{proPhone}
+            </if>
+            <if test="proAddress!=null">
+                proAddress = #{proAddress}
+            </if>
+            <if test="proFax!=null">
+            proFax = #{proFax}
+            </if>
+            <if test="createdBy!=null">
+            createdBy = #{createdBy}
+            </if>
+            <if test="creationDate!=null">
+            creationDate = #{creationDate}
+            </if>
+            <if test="modifyDate!=null">
+            modifyDate = #{modifyDate}
+            </if>
+            <if test="modifyBy!=null">
+            modifyBy = #{modifyBy}
+            </if>
+            <if test="billList!=null">
+            billList = #{billList}
+            </if>
+        </trim>
+    </update>
+
+    <delete id="deleteProvider">
+        DELETE FROM smbms_provider WHERE id = #{providerId}
+    </delete>
+
+    <resultMap id="ProviderMap" type="Provider">
+        <id property="id" column="id" />
+        <collection property="billList" ofType="Provider" resultMap="BillMap" />
+    </resultMap>
+    <resultMap id="BillMap" type="Bill">
+        <id property="id" column="b_id"  />
+    </resultMap>
+
+    <select id="findProviderAndBill" resultMap="ProviderMap">
+        SELECT p.id,p.proCode,p.proName,p.proContact,p.proPhone,b.id AS b_id,b.billCode,b.productName,b.productCount,b.isPayment
+        FROM smbms_provider AS p INNER JOIN smbms_bill AS b
+        ON p.id = b.providerId;
+    </select>
+
+    <select id="findProviderByProCodeAndProNameAndProContactAndCreationDate" parameterType="java.util.Map" resultType="Provider">
+        SELECT
+            *
+        FROM
+            smbms_provider
+        WHERE
+                proCode LIKE concat('%',#{proCode},'%')
+            AND
+                proName LIKE concat('%',#{proName},'%')
+            AND
+                proContact LIKE  concat('%',#{proContact},'%')
+            AND
+                <choose>
+                    <when test="companyAge = '大公司'">TIMESTAMPDIFF(YEAR,creationDate,NOW())&gt;5 AND  TIMESTAMPDIFF(YEAR,creationDate,NOW())&lt;=10 </when>
+                    <when test="companyAge = '中公司'">TIMESTAMPDIFF(YEAR,creationDate,NOW())&gt;1 AND  TIMESTAMPDIFF(YEAR,creationDate,NOW())&lt;=5 </when>
+                    <otherwise>TIMESTAMPDIFF(YEAR,creationDate,NOW())&lt;=1</otherwise>
+                </choose>
+    </select>
+
+
+</mapper>

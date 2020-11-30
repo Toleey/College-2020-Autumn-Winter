@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.bw.smbms.dao.address.AddressMapper"> <!-- 不同的表写在不同的mapper中 -->
+
+    <select id="findAddressCount" resultType="int">
+        select count(id) as line from smbms_address
+    </select>
+
+    <select id="findAddressList" resultType="org.bw.smbms.entity.Address">
+        select * from smbms_address
+    </select>
+
+    <insert id="insertAddress" parameterType="Address">
+        INSERT INTO smbms_address
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="contact!=null">contact,</if>
+            <if test="addressDesc!=null">addressDesc,</if>
+            <if test="postCode!=null">postCode,</if>
+            <if test="tel!=null">tel,</if>
+            <if test="createdBy!=null">createdBy,</if>
+            <if test="creationDate!=null">creationDate,</if>
+            <if test="modifyBy!=null">modifyBy,</if>
+            <if test="modifyDate!=null">modifyDate,</if>
+            <if test="userId!=null">userId,</if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="contact!=null">#{contact},</if>
+            <if test="addressDesc!=null">#{addressDesc},</if>
+            <if test="postCode!=null">#{postCode},</if>
+            <if test="tel!=null">#{tel},</if>
+            <if test="createdBy!=null">#{createdBy},</if>
+            <if test="creationDate!=null">#{creationDate},</if>
+            <if test="modifyBy!=null">#{modifyBy},</if>
+            <if test="modifyDate!=null">#{modifyDate},</if>
+            <if test="userId!=null">#{userId},</if>
+        </trim>
+
+    </insert>
+	
+</mapper>
