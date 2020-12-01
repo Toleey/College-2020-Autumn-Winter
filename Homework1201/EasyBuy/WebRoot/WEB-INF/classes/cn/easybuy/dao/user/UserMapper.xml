@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.easybuy.dao.user.UserMapper">
+    <cache eviction="FIFO" flushInterval="600000" size="512" readOnly="true" />
+
+    <select id="add" resultType="int">
+        INSERT into easybuy_user(loginName,userName,password,sex,identityCode,email,mobile) values(?,?,?,?,?,?,?)
+    </select>
+
+    <select id="update" resultType="int" >
+        UPDATE easybuy_user SET loginName=?,userName =?,type=?,sex =?, identityCode =?, email =?, mobile =? WHERE id =?
+    </select>
+
+    <select id="deleteUserById" resultType="int">
+        delete from easybuy_user where id = ?
+    </select>
+    <!--参数不用写，用了注解配置-->
+    <select id="getUserList" resultType="User">
+        select id,loginName,password,userName,sex,identityCode,email,mobile,type from easybuy_user where 1=1
+    </select>
+
+    <select id="count" resultType="Integer">
+        select count(*) count from easybuy_user where 1=1
+    </select>
+
+    <select id="getUser" resultType="User">
+        select id,loginName,userName,password,sex,identityCode,email,mobile,type from easybuy_user where 1=1
+    </select>
+
+</mapper>
