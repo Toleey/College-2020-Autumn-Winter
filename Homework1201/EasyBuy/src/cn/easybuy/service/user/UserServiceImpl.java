@@ -1,20 +1,17 @@
 package cn.easybuy.service.user;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.ibatis.session.SqlSession;
+import org.apache.log4j.Logger;
+
 import cn.easybuy.dao.MyBatisUtil;
-import cn.easybuy.dao.order.UserAddressDao;
-import cn.easybuy.dao.order.UserAddressDaoImpl;
 import cn.easybuy.dao.user.UserDao;
 import cn.easybuy.dao.user.UserDaoImpl;
 import cn.easybuy.dao.user.UserMapper;
-import cn.easybuy.entity.UserAddress;
-import cn.easybuy.utils.DataSourceUtil;
-import org.apache.ibatis.session.SqlSession;
-import org.apache.log4j.Logger;
 import cn.easybuy.entity.User;
+import cn.easybuy.utils.DataSourceUtil;
 
 public class UserServiceImpl implements UserService {
 	
@@ -22,74 +19,129 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public boolean add(User user){
-		Connection connection = null;
+		SqlSession session = null;
 		Integer count=0;
 		try {
-			connection = DataSourceUtil.openConnection();
-			UserDao userDao = new UserDaoImpl(connection);
-			count=userDao.add(user);
+			session = MyBatisUtil.createSession();
+			count=session.getMapper(UserMapper.class).add(user);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
-			DataSourceUtil.closeConnection(connection);
+			MyBatisUtil.closeSqlSession(session);
 			return  count>0;
 		}
+//		Connection connection = null;
+//		Integer count=0;
+//		try {
+//			connection = DataSourceUtil.openConnection();
+//			UserDao userDao = new UserDaoImpl(connection);
+//			count=userDao.add(user);
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}finally {
+//			DataSourceUtil.closeConnection(connection);
+//			return  count>0;
+//		}
 	}
 
 	@Override
 	public boolean update(User user) {
-		Connection connection = null;
+		SqlSession session = null;
 		Integer count=0;
 		try {
-			connection = DataSourceUtil.openConnection();
-			UserDao userDao = new UserDaoImpl(connection);
-			count=userDao.update(user);
+			session = MyBatisUtil.createSession();
+			count=session.getMapper(UserMapper.class).update(user);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
-			DataSourceUtil.closeConnection(connection);
+			MyBatisUtil.closeSqlSession(session);
 			return  count>0;
 		}
+//		Connection connection = null;
+//		Integer count=0;
+//		try {
+//			connection = DataSourceUtil.openConnection();
+//			UserDao userDao = new UserDaoImpl(connection);
+//			count=userDao.update(user);
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}finally {
+//			DataSourceUtil.closeConnection(connection);
+//			return  count>0;
+//		}
 	}
 
 	@Override
 	public boolean deleteUserById(Integer userId) {
-		Connection connection = null;
+
+		SqlSession session = null;
 		Integer count=0;
 		try {
-			connection = DataSourceUtil.openConnection();
-			UserDao userDao = new UserDaoImpl(connection);
-			count=userDao.deleteUserById(userId+"");
+			session  = MyBatisUtil.createSession();
+			count= session.getMapper(UserMapper.class).deleteUserById(userId+""); //传入String类型
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
-			DataSourceUtil.closeConnection(connection);
+			MyBatisUtil.closeSqlSession(session);
 			return  count>0;
 		}
+
+//		Connection connection = null;
+//		Integer count=0;
+//		try {
+//			connection = DataSourceUtil.openConnection();
+//			UserDao userDao = new UserDaoImpl(connection);
+//			count=userDao.deleteUserById(userId+"");
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}finally {
+//			DataSourceUtil.closeConnection(connection);
+//			return  count>0;
+//		}
 	}
 
 	@Override
 	public User getUser(Integer userId, String loginName) {
-		Connection connection = null;
+		SqlSession session = null;
 		User user=null;
 		try {
-			connection = DataSourceUtil.openConnection();
-			UserDao userDao = new UserDaoImpl(connection);
-			user=userDao.getUser(userId,loginName);
+			session = MyBatisUtil.createSession();
+			user=session.getMapper(UserMapper.class).getUser(userId,loginName);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
-			DataSourceUtil.closeConnection(connection);
+			MyBatisUtil.closeSqlSession(session);
 			return user;
 		}
+
+//		Connection connection = null;
+//		User user=null;
+//		try {
+//			connection = DataSourceUtil.openConnection();
+//			UserDao userDao = new UserDaoImpl(connection);
+//			user=userDao.getUser(userId,loginName);
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}finally {
+//			DataSourceUtil.closeConnection(connection);
+//			return user;
+//		}
 	}
 
 	@Override

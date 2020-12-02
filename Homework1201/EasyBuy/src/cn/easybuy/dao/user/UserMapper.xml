@@ -6,16 +6,22 @@
 <mapper namespace="cn.easybuy.dao.user.UserMapper">
     <cache eviction="FIFO" flushInterval="600000" size="512" readOnly="true" />
 
-    <select id="add" resultType="int">
-        INSERT into easybuy_user(loginName,userName,password,sex,identityCode,email,mobile) values(?,?,?,?,?,?,?)
+    <select id="add" parameterType="User" resultType="int">
+        INSERT into
+            easybuy_user(loginName,userName,password,sex,identityCode,email,mobile)
+        values
+            (#{loginName},#{userName},#{password},#{sex},#{identityCode},#{email},#{mobile})
     </select>
 
-    <select id="update" resultType="int" >
-        UPDATE easybuy_user SET loginName=?,userName =?,type=?,sex =?, identityCode =?, email =?, mobile =? WHERE id =?
+    <select id="update" parameterType="User" resultType="int" >
+        UPDATE
+            easybuy_user
+        SET
+            loginName=#{loginName},userName =#{userName},type=#{type},sex =#{sex}, identityCode =#{identityCode}, email =#{email}, mobile =#{mobile} WHERE id =#{id}
     </select>
 
-    <select id="deleteUserById" resultType="int">
-        delete from easybuy_user where id = ?
+    <select id="deleteUserById" parameterType="String" resultType="int">
+        delete from easybuy_user where id = #{id}
     </select>
     <!--参数不用写，用了注解配置-->
     <select id="getUserList" resultType="User">
@@ -23,7 +29,6 @@
             id,loginName,password,userName,sex,identityCode,email,mobile,type
         from
             easybuy_user limit #{currentPageNo},#{pageSize}
-        where 1=1
     </select>
 
     <select id="count" resultType="Integer">

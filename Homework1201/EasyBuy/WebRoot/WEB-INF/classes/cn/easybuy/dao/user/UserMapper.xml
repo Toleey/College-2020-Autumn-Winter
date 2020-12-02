@@ -19,7 +19,10 @@
     </select>
     <!--参数不用写，用了注解配置-->
     <select id="getUserList" resultType="User">
-        select id,loginName,password,userName,sex,identityCode,email,mobile,type from easybuy_user where 1=1
+        select
+            id,loginName,password,userName,sex,identityCode,email,mobile,type
+        from
+            easybuy_user limit #{currentPageNo},#{pageSize}
     </select>
 
     <select id="count" resultType="Integer">

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.easybuy.dao.news.NewsMapper">
+    <cache eviction="FIFO" flushInterval="600000" size="512" readOnly="true" />
+
+    <select id="add" parameterType="News">
+        INSERT into easybuy_news(title,content,createTime) values( ?, ?, ?)
+    </select>
+    <select id="update" parameterType="News">
+        update easybuy_news set title=?,content=? where id=?
+    </select>
+    <select id="deleteById" parameterType="Integer">
+        delete from easybuy_news where id = ?
+    </select>
+    <select id="getNewsById" parameterType="Integer">
+        select * from easybuy_news where id = ?
+    </select>
+    <select id="queryNewsList" parameterType="NewsParams">
+        select id,title,content,createTime FROM easybuy_news where 1=1
+    </select>
+    <select id="queryNewsCount" parameterType="NewsParams">
+        select count(*) as count FROM easybuy_news where 1=1
+    </select>
+
+</mapper>
