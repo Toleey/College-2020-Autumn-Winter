@@ -1,0 +1,32 @@
+<!--<?xml version="1.0" encoding="UTF-8" ?>-->
+<!--<!DOCTYPE mapper-->
+<!--        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"-->
+<!--        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">-->
+<!--<mapper namespace="cn.easybuy.dao.order.UserAddressMapper">-->
+<!--    <cache eviction="FIFO" flushInterval="600000" size="512" readOnly="true" />-->
+
+<!--    <select id="queryUserAddressList" resultType="UserAddress"-->
+<!--            parameterType="UserAddressParam">-->
+<!--        select-->
+<!--            id,userId,address,createTime,isDefault,remark-->
+<!--        from-->
+<!--            easybuy_user_address-->
+<!--        where 1=1-->
+<!--            <if test="userId != null and userId!=''"> and userId = #{userId}</if>-->
+<!--            <if test="address!=null and address!=''"> and address like #{address}</if>-->
+<!--            <if test="sort!=null and sort!=''"> order by sort</if>-->
+<!--            <if test="startIndex !=null"> limit startIndex,pageSize</if>-->
+<!--    </select>-->
+
+<!--    <insert id="add" parameterType="UserAddress">-->
+<!--        INSERT into-->
+<!--            easybuy_user_address(userId,address,createTime,isDefault,remark)-->
+<!--        VALUES-->
+<!--            (#{userId},#{address},#{createTime},#{isDefault},#{remark})-->
+<!--    </insert>-->
+
+<!--    <select id="getUserAddressById" parameterType="Integer">-->
+<!--        select id,userId,address,createTime,isDefault,remark from easybuy_user_address  where id=#{addressId}-->
+<!--    </select>-->
+
+<!--</mapper>-->
