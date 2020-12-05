@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.easybuy.dao.order.OrderMapper">
+    <cache eviction="FIFO" flushInterval="600000" size="512" readOnly="true" />
+<!--    <insert id="add" parameterType="Order">-->
+<!--        insert into-->
+<!--            easybuy_order_detail(orderId,productId,quantity,cost)-->
+<!--        values-->
+<!--            (#{orderId},#{productId},#{quantity},#{cost})-->
+<!--    </insert>-->
+<!--    <delete id="deleteById" parameterType="Integer">-->
+<!--        delete from easybuy_order_detail where id = #{id}-->
+<!--    </delete>-->
+<!--    <select id="getOrderById" parameterType="Integer">-->
+<!--        select orderId,productId,quantity,cost from easybuy_order_detail where id = #{id}-->
+<!--    </select>-->
+<!--    <select id="getOrderList" parameterType="Integer" >-->
+<!--        select-->
+<!--            id,orderId,productId,quantity,cost-->
+<!--        FROM-->
+<!--            easybuy_order_detail-->
+<!--        <trim prefix="where" prefixOverrides="and|or">-->
+<!--            <if test="userId!=null">-->
+<!--                userId = #{userId}-->
+<!--            </if>-->
+<!--            <if test="currentPageNo!=null">-->
+<!--            and currentPageNo = #{currentPageNo}-->
+<!--            </if>-->
+<!--            limit (currentPageNo-1) , pageSize-->
+<!--        </trim>-->
+<!--    </select>-->
+<!--    <select id="count" parameterType="Integer">-->
+<!--        select-->
+<!--            count(*)-->
+<!--        FROM-->
+<!--            easybuy_order_detail-->
+<!--        <trim prefix="where" prefixOverrides="and|or">-->
+<!--            <if test="userId!=null">-->
+<!--                userId = #{userId}-->
+<!--            </if>-->
+<!--        </trim>-->
+<!--    </select>-->
+</mapper>
