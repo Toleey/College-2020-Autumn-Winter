@@ -4,34 +4,40 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.easybuy.dao.order.OrderDetailMapper">
     <cache eviction="FIFO" flushInterval="600000" size="512" readOnly="true" />
-<!--    <insert id="add" parameterMap="OrderDetail">-->
-<!--        insert into-->
-<!--            easybuy_order_detail(orderId,productId,quantity,cost)-->
-<!--        values-->
-<!--            (#{orderId},#{productId},#{quantity},#{cost})-->
-<!--    </insert>-->
 
-<!--    <delete id="deleteById" parameterType="OrderDetail">-->
-<!--        delete from easybuy_order where id = #{id}-->
-<!--    </delete>-->
+    <insert id="add" parameterType="OrderDetail">
+        insert into
+            easybuy_order_detail(orderId,productId,quantity,cost)
+        values
+            (#{orderId},#{productId},#{quantity},#{cost})
+    </insert>
 
-<!--    <select id="getOrderDetailById" parameterType="Integer">-->
-<!--        select * from easybuy_order where id = #{id}-->
-<!--    </select>-->
+    <delete id="deleteById" parameterType="OrderDetail">
+        delete from
+		    easybuy_order_detail
+		where
+		    id = #{id}
+    </delete>
 
-<!--    <select id="getOrderDetailList" parameterType="Integer">-->
-<!--        select-->
-<!--            id,userId,loginName,userAddress,createTime,cost,serialNumber-->
-<!--        from-->
-<!--            easybuy_order-->
-<!--        <trim prefix="where" prefixOverrides="and|or">-->
-<!--            <if test="orderId">-->
-<!--                orderId = #{orderId}-->
-<!--            </if>-->
-<!--        </trim>-->
-<!--    </select>-->
+    <select id="getOrderDetailById" parameterType="Integer" resultType="OrderDetail">
+		select
+		    orderId,productId,quantity,cost from easybuy_order_detail
+		where
+		    id = #{id}
+	</select>
 
-<!--    <select id="queryOrderDetailCount" parameterType="OrderDetailParam">-->
-<!--        select count(*) FROM easybuy_order_detail-->
-<!--    </select>-->
+    <select id="getOrderDetailList" parameterType="Integer" resultType="OrderDetail">
+        select
+            id,orderId,productId,quantity,cost
+        FROM
+            easybuy_order_detail
+        where
+            1=1
+        <if test="orderId != null"> and orderId=#{orderId}</if>
+    </select>
+
+    <select id="queryOrderDetailCount" resultType="int" parameterType="OrderDetailParam">
+		select count(*) FROM easybuy_order_detail
+	</select>
+
 </mapper>
