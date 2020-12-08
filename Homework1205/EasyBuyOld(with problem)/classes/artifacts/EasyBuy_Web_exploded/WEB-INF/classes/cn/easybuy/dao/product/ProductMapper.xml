@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.easybuy.dao.product.ProductMapper">
+    <cache eviction="FIFO" flushInterval="600000" size="512" readOnly="true" />
+
+    <update id="updateStock" parameterType="Integer">
+        update easybuy_product set stock=#{quantity} where id=#{id}
+    </update>
+    <insert id="add" parameterType="Product">
+        insert into
+            easybuy_product(name,description,price,stock,categoryLevel1Id,categoryLevel2Id,categoryLevel3Id,fileName,isDelete)
+        values
+            (#{name},#{desciption},#{price},#{stock},#{categoryLevel1Id},#{categoryLevel2Id},#{categoryLevel3Id},#{fileName},#{isDelete})
+    </insert>
+    <update id="update" parameterType="Product">
+        update
+            easybuy_product
+        set
+            name=#{name},fileName=#{fileName},categoryLevel1Id=#{categoryLevel1Id},categoryLevel2Id=#{categoryLevel2Id},categoryLevel3Id=#{categoryLevel3Id}
+        where
+            id=#{id}
+    </update>
+    <delete id="deleteProductById" parameterType="Integer">
+        delete from easybuy_product where id = #{id}
+    </delete>
+    <select id="getProductById" parameterType="Integer">
+        select
+            id,name,description,price,stock,categoryLevel1Id,categoryLevel2Id,categoryLevel3Id,fileName,isDelete
+        from
+            easybuy_product
+        where
+            id = #{id}
+    </select>
+    <select id="getProductList">
+        select
+            id,name,description,price,stock,categoryLevel1Id,categoryLevel2Id,categoryLevel3Id,fileName,isDelete
+        from
+            easybuy_product
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="proName!=null">
+                name like concat('%',#{proName},'%')
+            </if>
+            <if test="categoryId!=null">
+                and (categoryLevel1Id = #{categoryId} or categoryLevel2Id=#{categoryId} or categoryLevel3Id=#{categoryId} )
+            </if>
+
+        </trim>
+    </select>
+    <select id="queryProductCount">
+        select
+            count(*) count
+        from
+            easybuy_product
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="proName!=null">
+                name like concat('%',#{proName},'%')
+            </if>
+            <if test="categoryId!=null">
+                and (categoryLevel1Id = #{categoryId} or categoryLevel2Id=#{categoryId} or categoryLevel3Id=#{categoryId} )
+            </if>
+        </trim>
+    </select>
+
+</mapper>

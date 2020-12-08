@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.easybuy.dao.order.OrderMapper">
+    <cache eviction="FIFO" flushInterval="600000" size="512" readOnly="true" />
+
+    <insert id="add" parameterType="Order">
+        insert into
+		    easybuy_order(userId,loginName,userAddress,createTime,cost,serialNumber)
+		values
+		    (#{userId},#{loginName},#{userAddress},#{createTime},#{cost},#{serialNumber})
+    </insert>
+
+    <delete id="deleteById" parameterType="int">
+		delete from
+		    easybuy_order
+		where
+		    id = #{id}
+	</delete>
+
+    <select id="getOrderById" resultType="Order" parameterType="Integer">
+		select
+		    *
+		from
+		    easybuy_order
+		where
+		    id = #{id}
+	</select>
+
+    <select id="getOrderList" resultType="Order">
+        select
+            id,userId,loginName,userAddress,createTime,cost,serialNumber
+        from
+            easybuy_order
+        where
+            1=1
+        <if test="userId != null and userId != null">and userId = #{userId}</if>
+        limit #{currentPageNo},#{pageSize}
+    </select>
+
+    <select id="count" parameterType="int" resultType="int">
+        select
+            count(*)
+        from
+            easybuy_order
+        where
+            1=1
+        <if test="userId!=null"> and userId = #{userId}</if>
+    </select>
+
+</mapper>

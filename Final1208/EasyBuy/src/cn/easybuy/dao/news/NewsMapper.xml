@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.easybuy.dao.news.NewsMapper">
+    <cache eviction="FIFO" flushInterval="600000" size="512" readOnly="true" />
+
+<!--    <insert id="add" parameterType="News">-->
+<!--        INSERT into-->
+<!--            easybuy_news(title,content,createTime)-->
+<!--        values-->
+<!--            ( #{title}, #{content}, #{createTime})-->
+<!--    </insert>-->
+<!--    <update id="update" parameterType="News">-->
+<!--        update easybuy_news set title=#{title},content=#{content} where id=#{id}-->
+<!--    </update>-->
+<!--    <delete id="deleteById" parameterType="Integer">-->
+<!--        delete from easybuy_news where id = id-->
+<!--    </delete>-->
+<!--    <select id="getNewsById" parameterType="Integer">-->
+<!--        select * from easybuy_news where id = id-->
+<!--    </select>-->
+<!--    <select id="queryNewsList" parameterType="NewsParams">-->
+<!--        select-->
+<!--            id,title,content,createTime-->
+<!--        FROM-->
+<!--            easybuy_news-->
+<!--        <trim prefix="WHERE" prefixOverrides="AND|OR">-->
+<!--            <if test="title!=null">-->
+<!--                title like #{title}-->
+<!--            </if>-->
+<!--            <if test="sort!=null">-->
+<!--                order by #{sort}-->
+<!--            </if>-->
+<!--            <if test="isPage==true">-->
+<!--                limit startIndex,pageSize-->
+<!--            </if>-->
+<!--        </trim>-->
+<!--    </select>-->
+<!--    <select id="queryNewsCount" parameterType="NewsParams">-->
+<!--        select-->
+<!--            count(*) as count-->
+<!--        FROM-->
+<!--            easybuy_news-->
+<!--        <trim prefix="WHERE" prefixOverrides="AND|OR">-->
+<!--            <if test="title!=null">-->
+<!--                title like #{title}-->
+<!--            </if>-->
+<!--        </trim>-->
+<!--    </select>-->
+
+</mapper>
